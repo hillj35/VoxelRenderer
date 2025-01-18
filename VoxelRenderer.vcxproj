@@ -165,7 +165,6 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="External\"/>
-        <Folder Include="Shaders\"/>
     </ItemGroup>
     <ItemGroup>
         <ClInclude Include="MagicaVoxParser.h"/>
@@ -177,6 +176,8 @@
         <Content Include=".gitignore"/>
         <Content Include="Assets\monu9.vox"/>
         <Content Include="clang-format"/>
+        <Content Include="Shaders\fragment.glsl"/>
+        <Content Include="Shaders\vertex.glsl"/>
     </ItemGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
     <ImportGroup Label="ExtensionTargets">
