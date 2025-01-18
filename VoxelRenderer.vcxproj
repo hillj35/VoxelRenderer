@@ -157,6 +157,7 @@
         </Link>
     </ItemDefinitionGroup>
     <ItemGroup>
+        <ClCompile Include="Camera.cpp"/>
         <ClCompile Include="glad.c"/>
         <ClCompile Include="MagicaVoxParser.cpp"/>
         <ClCompile Include="VoxelMesh.cpp"/>
@@ -167,6 +168,7 @@
         <Folder Include="External\"/>
     </ItemGroup>
     <ItemGroup>
+        <ClInclude Include="Camera.h"/>
         <ClInclude Include="MagicaVoxParser.h"/>
         <ClInclude Include="Shader.h"/>
         <ClInclude Include="VoxelMesh.h"/>

@@ -10,9 +10,9 @@ void VoxelMesh::RenderMesh()
    glEnable(GL_DEPTH_TEST);
    _shader.Use();
 
-   for (auto subMesh : _subMeshes) {
+   for (auto &subMesh : _subMeshes) {
       auto model = translate(glm::mat4(1.0f), subMesh.position);
-      auto view = lookAt(glm::vec3(-10, 20, -30.0f), glm::vec3(20, 0, 0), glm::vec3(0, 1, 0));
+      auto view = lookAt(glm::vec3(-10, 75, -80.0f), glm::vec3(20, 30, 30), glm::vec3(0, 1, 0));
       glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 1.0f, 1000.0f);
       int modelLoc = glGetUniformLocation(_shader.id, "model");
       int viewLoc = glGetUniformLocation(_shader.id, "view");
@@ -30,7 +30,7 @@ void VoxelMesh::RenderMesh()
 void VoxelMesh::BuildMesh()
 {
    // build local mesh
-   for (auto voxel : _modelInfo.voxels) {
+   for (auto &voxel : _modelInfo.voxels) {
       // add a submesh for each voxel
       std::vector<Vertex> vertices;
       std::vector<unsigned int> indices;
