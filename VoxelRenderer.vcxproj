@@ -157,9 +157,11 @@
         </Link>
     </ItemDefinitionGroup>
     <ItemGroup>
+        <ClCompile Include="glad.c"/>
         <ClCompile Include="MagicaVoxParser.cpp"/>
         <ClCompile Include="VoxelMesh.cpp"/>
         <ClCompile Include="VoxelRenderer.cpp"/>
+        <ClCompile Include="Window.cpp"/>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="External\"/>
@@ -169,9 +171,10 @@
         <ClInclude Include="MagicaVoxParser.h"/>
         <ClInclude Include="Shader.h"/>
         <ClInclude Include="VoxelMesh.h"/>
+        <ClInclude Include="Window.h"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include=".gitignore" />
+        <Content Include=".gitignore"/>
         <Content Include="Assets\monu9.vox"/>
         <Content Include="clang-format"/>
     </ItemGroup>
