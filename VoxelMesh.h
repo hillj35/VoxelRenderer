@@ -6,6 +6,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Camera.h"
+
 struct Vertex
 {
    glm::vec3 position;
@@ -65,13 +67,14 @@ private:
 class VoxelMesh
 {
 public:
-   VoxelMesh(VoxModel &model, Shader &shader);
+   VoxelMesh(VoxModel &model, Shader &shader, Camera &camera);
 
    void RenderMesh();
 
 private:
    Shader &_shader;
    VoxModel &_modelInfo;
+   Camera  &_camera;
    std::vector<SubMesh> _subMeshes;
 
    void BuildMesh();

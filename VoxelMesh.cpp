@@ -1,6 +1,6 @@
 #include "VoxelMesh.h"
 
-VoxelMesh::VoxelMesh(VoxModel &model, Shader &shader) : _shader(shader), _modelInfo(model)
+VoxelMesh::VoxelMesh(VoxModel &model, Shader &shader, Camera &camera) : _shader(shader), _modelInfo(model), _camera(camera)
 {
    BuildMesh();
 }
@@ -12,7 +12,7 @@ void VoxelMesh::RenderMesh()
 
    for (auto &subMesh : _subMeshes) {
       auto model = translate(glm::mat4(1.0f), subMesh.position);
-      auto view = lookAt(glm::vec3(-10, 75, -80.0f), glm::vec3(20, 30, 30), glm::vec3(0, 1, 0));
+      auto view = _camera.view;
       glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 1.0f, 1000.0f);
       int modelLoc = glGetUniformLocation(_shader.id, "model");
       int viewLoc = glGetUniformLocation(_shader.id, "view");
@@ -25,7 +25,6 @@ void VoxelMesh::RenderMesh()
       subMesh.Draw();
    }
 }
-
 
 void VoxelMesh::BuildMesh()
 {

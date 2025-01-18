@@ -11,11 +11,16 @@ public:
 
    bool ShouldClose() const;
    void ClearColor(float r, float g, float b, float a);
-   void ProcessInput() const;
+   bool GetKeyDown(const int key);
+   float GetDeltaTime() { return _deltaTime; }
+   GLFWwindow* GetGLFWwindow() { return _window; }
+   void ProcessInput();
    void SwapBuffers() const;
 
 private:
    int _height, _width;
+   float _deltaTime = 0.0f;
+   float _lastFrame = 0.0f;
    GLFWwindow *_window;
 
    static void FrameBufferSizeCallback(GLFWwindow *window, int width, int height);

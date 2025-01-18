@@ -24,9 +24,17 @@ void Window::ClearColor(float r, float g, float b, float a)
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-
-void Window::ProcessInput() const
+bool Window::GetKeyDown(const int key)
 {
+   return glfwGetKey(_window, key);
+}
+
+void Window::ProcessInput()
+{
+   float currentFrame = glfwGetTime();
+   _deltaTime = currentFrame - _lastFrame;
+   _lastFrame = currentFrame;
+   
    if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       glfwSetWindowShouldClose(_window, GLFW_TRUE);
    }
@@ -59,6 +67,7 @@ void Window::Init()
 
    glViewport(0, 0, _width, _height);
    glfwSetFramebufferSizeCallback(_window, FrameBufferSizeCallback);
+   glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Window::FrameBufferSizeCallback(GLFWwindow *window, int width, int height)
