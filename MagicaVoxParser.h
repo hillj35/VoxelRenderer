@@ -35,9 +35,8 @@ struct VoxChunk
 class MagicaVoxParser
 {
 public:
-   static VoxModel loadModel(const std::string &fileName)
+   static VoxModel LoadModel(const std::string &fileName, VoxModel &model)
    {
-      VoxModel model;
       std::ifstream file(fileName, std::ios::binary);
       if (!file) {
          std::cerr << "Error opening file " << std::endl;
