@@ -67,7 +67,6 @@ void Window::Init()
 
    glViewport(0, 0, _width, _height);
    glfwSetFramebufferSizeCallback(_window, FrameBufferSizeCallback);
-   glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Window::FrameBufferSizeCallback(GLFWwindow *window, int width, int height)

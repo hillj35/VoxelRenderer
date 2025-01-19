@@ -25,9 +25,13 @@ private:
    // mouse variables
    float _lastMouseX = 960.0f, _lastMouseY = 540.0f;
    float _yaw = 90.0f, _pitch = 0.0f;
+   bool _mouseButtonHeld = false;
+   bool _firstFrameHeld = true;
 
    void ProcessInput();
    void MouseCallback(GLFWwindow* window, double xpos, double ypos);
+   void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
    static void StaticMouseCallback(GLFWwindow* window, double xpos, double ypos);
+   static void StaticMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 };
