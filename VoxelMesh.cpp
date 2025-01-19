@@ -8,6 +8,7 @@ VoxelMesh::VoxelMesh(VoxModel &model, Shader &shader, Camera &camera) : _shader(
 void VoxelMesh::RenderMesh()
 {
    glEnable(GL_DEPTH_TEST);
+   glCullFace(GL_BACK);
    _shader.Use();
 
    for (auto &subMesh : _subMeshes) {
@@ -41,29 +42,69 @@ void VoxelMesh::BuildMesh()
       float a = (color >> 24 & 0xFF) / 255.0f;
       glm::vec3 parsedColor = { r,g,b };
 
-      vertices.push_back({ { 0.0f,0.0f,0.0f },parsedColor });
-      vertices.push_back({ { 0.0f,0.0f,1.0f },parsedColor });
-      vertices.push_back({ { 1.0f,0.0f,1.0f },parsedColor });
-      vertices.push_back({ { 1.0f,0.0f,0.0f },parsedColor });
-      vertices.push_back({ { 0.0f,1.0f,0.0f },parsedColor });
-      vertices.push_back({ { 0.0f,1.0f,1.0f },parsedColor });
-      vertices.push_back({ { 1.0f,1.0f,1.0f },parsedColor });
-      vertices.push_back({ { 1.0f,1.0f,0.0f },parsedColor });
+      vertices = {
+          // Front face (z = 1.0f)
+          { { 0.0f, 0.0f, 1.0f }, {  0.0f,  0.0f,  1.0f }, parsedColor }, // Bottom-left
+          { { 1.0f, 0.0f, 1.0f }, {  0.0f,  0.0f,  1.0f }, parsedColor }, // Bottom-right
+          { { 1.0f, 1.0f, 1.0f }, {  0.0f,  0.0f,  1.0f }, parsedColor }, // Top-right
+          { { 0.0f, 1.0f, 1.0f }, {  0.0f,  0.0f,  1.0f }, parsedColor }, // Top-left
+
+          // Back face (z = 0.0f)
+          { { 0.0f, 0.0f, 0.0f }, {  0.0f,  0.0f, -1.0f }, parsedColor }, // Bottom-left
+          { { 0.0f, 1.0f, 0.0f }, {  0.0f,  0.0f, -1.0f }, parsedColor }, // Top-left
+          { { 1.0f, 1.0f, 0.0f }, {  0.0f,  0.0f, -1.0f }, parsedColor }, // Top-right
+          { { 1.0f, 0.0f, 0.0f }, {  0.0f,  0.0f, -1.0f }, parsedColor }, // Bottom-right
+
+          // Top face (y = 1.0f)
+          { { 0.0f, 1.0f, 0.0f }, {  0.0f,  1.0f,  0.0f }, parsedColor }, // Bottom-left
+          { { 0.0f, 1.0f, 1.0f }, {  0.0f,  1.0f,  0.0f }, parsedColor }, // Top-left
+          { { 1.0f, 1.0f, 1.0f }, {  0.0f,  1.0f,  0.0f }, parsedColor }, // Top-right
+          { { 1.0f, 1.0f, 0.0f }, {  0.0f,  1.0f,  0.0f }, parsedColor }, // Bottom-right
+
+          // Bottom face (y = 0.0f)
+          { { 0.0f, 0.0f, 0.0f }, {  0.0f, -1.0f,  0.0f }, parsedColor }, // Bottom-left
+          { { 1.0f, 0.0f, 0.0f }, {  0.0f, -1.0f,  0.0f }, parsedColor }, // Bottom-right
+          { { 1.0f, 0.0f, 1.0f }, {  0.0f, -1.0f,  0.0f }, parsedColor }, // Top-right
+          { { 0.0f, 0.0f, 1.0f }, {  0.0f, -1.0f,  0.0f }, parsedColor }, // Top-left
+
+          // Right face (x = 1.0f)
+          { { 1.0f, 0.0f, 0.0f }, {  1.0f,  0.0f,  0.0f }, parsedColor }, // Bottom-left
+          { { 1.0f, 1.0f, 0.0f }, {  1.0f,  0.0f,  0.0f }, parsedColor }, // Top-left
+          { { 1.0f, 1.0f, 1.0f }, {  1.0f,  0.0f,  0.0f }, parsedColor }, // Top-right
+          { { 1.0f, 0.0f, 1.0f }, {  1.0f,  0.0f,  0.0f }, parsedColor }, // Bottom-right
+
+          // Left face (x = 0.0f)
+          { { 0.0f, 0.0f, 0.0f }, { -1.0f,  0.0f,  0.0f }, parsedColor }, // Bottom-left
+          { { 0.0f, 0.0f, 1.0f }, { -1.0f,  0.0f,  0.0f }, parsedColor }, // Bottom-right
+          { { 0.0f, 1.0f, 1.0f }, { -1.0f,  0.0f,  0.0f }, parsedColor }, // Top-right
+          { { 0.0f, 1.0f, 0.0f }, { -1.0f,  0.0f,  0.0f }, parsedColor }, // Top-left
+      };
 
       indices = {
-         // Bottom face (CCW)
-         0,1,2,0,2,3,
-         // Top face (CCW corrected)
-         4,5,6,4,6,7,
-         // Front face (CCW)
-         0,4,5,0,5,1,
-         // Back face (CCW)
-         3,2,6,3,6,7,
-         // Left face (CCW corrected)
-         0,7,3,0,4,7,
-         // Right face (CCW)
-         1,5,6,1,6,2
-      };
+         // Front face
+         0, 1, 2,  // First triangle
+         0, 2, 3,  // Second triangle
+
+         // Back face
+         4, 5, 6,  // First triangle
+         4, 6, 7,  // Second triangle
+
+         // Top face
+         8, 9, 10, // First triangle
+         8, 10, 11, // Second triangle
+
+         // Bottom face
+         12, 13, 14, // First triangle
+         12, 14, 15, // Second triangle
+
+         // Right face
+         16, 17, 18, // First triangle
+         16, 18, 19, // Second triangle
+
+         // Left face
+         20, 21, 22, // First triangle
+         20, 22, 23  // Second triangle
+     };
 
       auto subMesh = SubMesh(vertices, indices, { voxel.x,voxel.z,voxel.y });
 
