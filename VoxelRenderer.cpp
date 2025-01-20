@@ -3,6 +3,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Light.h"
 #include "MagicaVoxParser.h"
+#include "PostProcessor.h"
 #include "Shader.h"
 #include "VoxelMesh.h"
 #include "Window.h"
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
       glm::vec3(1.0f, 1.0f, 1.0f)
    };
 
+   auto postProcessor = std::make_unique<PostProcessor>();
+
    shader.Use();
    shader.setVec3("light.direction", light.direction);
    shader.setVec3("light.ambient", light.ambient);
@@ -34,11 +37,12 @@ int main(int argc, char *argv[])
       window.ProcessInput();
       GUI::InitFrame();
       camera.MoveCamera();
-      window.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-      GUI::Render(window);
 
+      postProcessor->BindPostProcessingFramebuffer();
       mesh.RenderMesh();
+      postProcessor->RenderPostProcessQuad();
 
+      GUI::Render(window);
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       window.SwapBuffers();
    }

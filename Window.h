@@ -11,9 +11,9 @@ public:
 
    bool ShouldClose() const;
    void ClearColor(float r, float g, float b, float a);
-   bool GetKeyDown(const int key);
+   bool GetKeyDown(int key);
    float GetDeltaTime() { return _deltaTime; }
-   GLFWwindow* GetGLFWwindow() { return _window; }
+   GLFWwindow *GetGLFWwindow() { return _window; }
    void ProcessInput();
    void SwapBuffers() const;
 
