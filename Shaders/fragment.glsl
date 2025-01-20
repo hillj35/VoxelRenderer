@@ -24,4 +24,5 @@ void main() {
     vec3 color = clamp(diffuse + ambient, vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0)) * vertexColor;
 
     gl_FragColor = vec4(color, 1.0);
+    //gl_FragColor = vec4(normal, 1.0);
 }
