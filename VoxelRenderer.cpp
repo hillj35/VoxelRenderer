@@ -1,4 +1,6 @@
 #include "Camera.h"
+#include "GUI.h"
+#include "imgui_impl_opengl3.h"
 #include "Light.h"
 #include "MagicaVoxParser.h"
 #include "Shader.h"
@@ -15,7 +17,7 @@ int main(int argc, char *argv[])
    MagicaVoxParser::LoadModel("Assets/monu9.vox", model);
    auto mesh = VoxelMesh(model, shader, camera);
 
-   auto light = DirectionalLight {
+   auto light = DirectionalLight{
       glm::vec3(0.2f, -1.0f, 0.3f),
       glm::vec3(0.8f, 0.8f, 0.8f),
       glm::vec3(1.0f, 1.0f, 1.0f)
@@ -26,15 +28,22 @@ int main(int argc, char *argv[])
    shader.setVec3("light.ambient", light.ambient);
    shader.setVec3("light.diffuse", light.diffuse);
 
+   GUI::InitOpenGL(window.GetGLFWwindow());
+
    while (!window.ShouldClose()) {
       window.ProcessInput();
+      GUI::InitFrame();
       camera.MoveCamera();
       window.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+      GUI::Render(window);
 
       mesh.RenderMesh();
 
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
       window.SwapBuffers();
    }
+
+   GUI::Shutdown();
 
    glfwTerminate();
 

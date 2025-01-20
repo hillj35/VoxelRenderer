@@ -34,7 +34,7 @@ void Window::ProcessInput()
    float currentFrame = glfwGetTime();
    _deltaTime = currentFrame - _lastFrame;
    _lastFrame = currentFrame;
-   
+
    if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
       glfwSetWindowShouldClose(_window, GLFW_TRUE);
    }
@@ -49,8 +49,8 @@ void Window::SwapBuffers() const
 void Window::Init()
 {
    glfwInit();
-   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
    _window = glfwCreateWindow(_width, _height, "Voxel Renderer", nullptr, nullptr);

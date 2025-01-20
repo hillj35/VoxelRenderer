@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <windows.h>
 
 struct Voxel
 {
@@ -64,8 +63,8 @@ public:
          std::string id = chunk.id;
          id = id.substr(0, 4);
          if (id == "SIZE") {
-            // don't care about this chunk
-            file.seekg(chunk.chunkBytes + chunk.childrenBytes, std::ios::cur);
+            file.read(reinterpret_cast<char *>(&model.sizeX), sizeof(int) * 3);
+            std::cout << model.sizeX << " " << model.sizeY << " " << model.sizeZ << std::endl;
          } else if (id == "XYZI") {
             // main position
             int numVoxels;
