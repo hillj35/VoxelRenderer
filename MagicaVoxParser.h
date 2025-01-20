@@ -16,6 +16,25 @@ struct VoxModel
    int sizeX, sizeY, sizeZ;
    std::vector<Voxel> voxels;
    std::vector<unsigned int> colors;
+   bool *voxelMap;
+
+   ~VoxModel()
+   {
+      delete[] voxelMap;
+   }
+
+   bool VoxelAt(int x, int y, int z)
+   {
+      if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ) {
+         return false;
+      }
+      return voxelMap[z * (sizeX * sizeY) + (y * sizeX) + x];
+   }
+
+   void AddVoxel(int x, int y, int z)
+   {
+      voxelMap[z * (sizeX * sizeY) + (y * sizeX) + x] = true;
+   }
 };
 
 struct VoxHeader
@@ -34,7 +53,7 @@ struct VoxChunk
 class MagicaVoxParser
 {
 public:
-   static VoxModel LoadModel(const std::string &fileName, VoxModel &model)
+   static void LoadModel(const std::string &fileName, VoxModel &model)
    {
       std::ifstream file(fileName, std::ios::binary);
       if (!file) {
@@ -62,9 +81,12 @@ public:
 
          std::string id = chunk.id;
          id = id.substr(0, 4);
+
          if (id == "SIZE") {
             file.read(reinterpret_cast<char *>(&model.sizeX), sizeof(int) * 3);
             std::cout << model.sizeX << " " << model.sizeY << " " << model.sizeZ << std::endl;
+            std::cout << "array size: " << model.sizeX * model.sizeY * model.sizeZ << std::endl;
+            model.voxelMap = new bool[model.sizeX * model.sizeY * model.sizeZ]{ false };
          } else if (id == "XYZI") {
             // main position
             int numVoxels;
@@ -76,6 +98,7 @@ public:
             while (bytesRead < chunk.chunkBytes - 4 && file.read(reinterpret_cast<char *>(&voxel), sizeof(Voxel))) {
                bytesRead += file.gcount();
                model.voxels.push_back(voxel);
+               model.AddVoxel(voxel.x, voxel.y, voxel.z);
             }
             std::cout << "bytesRead: " << bytesRead << std::endl;
          } else if (id == "RGBA") {
@@ -92,8 +115,6 @@ public:
       if (!hasColorPallete) {
          model.colors = DefaultPallete();
       }
-
-      return model;
    }
 
 private:
