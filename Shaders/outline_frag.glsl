@@ -25,5 +25,4 @@ void main() {
     vec2 offset = vec2(1.0 / 1920, 1.0 / 1080);
     float edge = CalculateEdge(texcoords, offset, screenColor);
     gl_FragColor = edge > 0 ? vec4(0.0, 0.0, 0.0, 1.0) : texture(screenColor, texcoords);
-    //gl_FragColor = vec4(edge, edge, edge, 1.0f);
 }

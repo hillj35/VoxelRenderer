@@ -16,12 +16,7 @@ struct VoxModel
    int sizeX, sizeY, sizeZ;
    std::vector<Voxel> voxels;
    std::vector<unsigned int> colors;
-   bool *voxelMap;
-
-   ~VoxModel()
-   {
-      delete[] voxelMap;
-   }
+   std::unique_ptr<bool[]> voxelMap;
 
    bool VoxelAt(int x, int y, int z)
    {
@@ -86,7 +81,7 @@ public:
             file.read(reinterpret_cast<char *>(&model.sizeX), sizeof(int) * 3);
             std::cout << model.sizeX << " " << model.sizeY << " " << model.sizeZ << std::endl;
             std::cout << "array size: " << model.sizeX * model.sizeY * model.sizeZ << std::endl;
-            model.voxelMap = new bool[model.sizeX * model.sizeY * model.sizeZ]{ false };
+            model.voxelMap = std::unique_ptr<bool[]>(new bool[model.sizeX * model.sizeY * model.sizeZ]{ false });
          } else if (id == "XYZI") {
             // main position
             int numVoxels;

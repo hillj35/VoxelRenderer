@@ -21,6 +21,9 @@ void VoxelMesh::RenderMesh()
    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, value_ptr(projection));
 
    for (auto &subMesh : _subMeshes) {
+      if (subMesh.numVerts == 0)
+         continue;
+
       auto model = translate(glm::mat4(1.0f), subMesh.position);
 
       glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
@@ -171,7 +174,7 @@ void VoxelMesh::BuildMesh()
       //    20,22,23  // Second triangle
       // };
 
-      auto subMesh = SubMesh(vertices, indices, { voxel.x,voxel.z,voxel.y });
+      auto subMesh = SubMesh(vertices, indices, { voxel.x,voxel.z,voxel.y }, numVerts);
 
       _subMeshes.push_back(subMesh);
    }

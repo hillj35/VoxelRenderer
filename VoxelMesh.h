@@ -27,10 +27,12 @@ public:
    glm::vec3 position;
    std::vector<Vertex> vertices;
    std::vector<unsigned int> indices;
+   unsigned int numVerts;
    // todo: add material
 
-   SubMesh(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, glm::vec3 position) : position(position), vertices(vertices), indices(indices)
+   SubMesh(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, glm::vec3 position, unsigned int verts) : position(position), vertices(vertices), indices(indices)
    {
+      numVerts = verts;
       BuildBuffers();
    }
 
@@ -77,7 +79,7 @@ public:
 private:
    Shader &_shader;
    VoxModel &_modelInfo;
-   Camera  &_camera;
+   Camera &_camera;
    std::vector<SubMesh> _subMeshes;
 
    void BuildMesh();
